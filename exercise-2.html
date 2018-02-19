@@ -31,8 +31,39 @@
 
     const root = document.getElementById('root');
     const tasks = [{taskName: 'Walk Dog', finished: true}, {taskName: 'Buy Bread', finished: false}];
+    const TodoListItems = tasks.map((task) => {
+            return <TodoListItem taskName={task.taskName} finished={task.finished} />
+          })
 
-    // TYPE ANSWER HERE
+    class TableCell extends React.Component {
+      render(){
+        return (<tr>
+              <td>{this.props.taskName}</td><td><input type='checkbox'/></td>
+            </tr>);
+      }
+    }
+
+    class TodoList extends React.Component {
+      render(){
+        return (
+      <h1>Get It Done! <br/><small>For the truly industrious</small></h1>
+      <div id="root">
+        <table>
+          <thead>
+            <tr><td>Task</td><td>Done?</td></tr>
+          </thead>
+          <tbody>
+          {TodoListItems}
+          </tbody>
+        </table>
+      </div>
+    </div>);
+      }
+    }
+
+    ReactDOM.render(
+    (<TodoList/>),
+    root);
 
     </script>
   </body>
