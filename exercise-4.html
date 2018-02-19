@@ -32,13 +32,68 @@
         </form>
       </div>
     </div>
-    <script src="./rando.js"></script>  
+    <script src="./rando.js"></script>
     <script type="text/babel">
 
     const root = document.getElementById('root');
 
-    // TYPE ANSWER HERE
+      class AddTodoListItem extends React.Component {
+      render() {
+        const onSubmit = (evt) => {
+          evt.preventDefault();
+          const taskName = evt.target.elements.taskName;
+          this.props.addTodoItem(taskName.value);
+          taskName.value = '';
+        }
+        return (
+          <form onSubmit={onSubmit}>
+            <input type='text' name='taskName' placeholder="Write Task Name"/>
+          <button type='submit'>Add</button>
+        </form>
+          )
+      }
+    }
 
+    class TodoListItem extends React.Component {
+      render(){
+        return (<tr>
+            <td>{this.props.taskName}</td><td><input type='checkbox'/></td>
+          </tr>);
+        }
+      }
+
+      class TodoList extends React.Component {
+        constructor(props) {
+          super(props);
+          this.addTodoItem = this.addTodoItem.bind(this);
+          this.state = { tasks: [{taskName: 'Walk Dog', finished: false}, {taskName: 'Buy Bread', finished: true}]}
+        }
+        addTodoItem(taskName) {
+          const task = {taskName: taskName, finished: false};
+          const oldTasks = this.state.tasks;
+          const newTasks = this.state.tasks.concat(task);
+          this.setState({tasks: newTasks});
+        }
+        render() {
+          const toDoListItems = this.state.tasks.map((task) => {
+            return <TodoListItem taskName={task.taskName} finished={task.finished} />
+          })
+          return (
+            <div>
+              <table>
+                <thead>
+                  <tr><td>Task</td><td>Done?</td></tr>
+                </thead>
+                <tbody>
+                  {toDoListItems}
+                </tbody>
+                </table>
+                <AddTodoListItem addTodoItem={this.addTodoItem}/>
+            </div>
+          )
+        }
+      }
+      ReactDOM.render((<TodoList />), root)
     </script>
   </body>
 </html>
